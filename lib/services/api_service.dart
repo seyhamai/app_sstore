@@ -1,8 +1,5 @@
-```dart
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import '../models/banner_model.dart';
 import '../models/category_model.dart';
 
@@ -35,10 +32,6 @@ class ApiService {
         .toList();
   }
 
-  // ============================================================
-  // CATEGORIES
-  // ============================================================
-
   Future<List<CategoryModel>> getCategories() async {
     final response = await http.get(
       Uri.parse('$baseUrl/categories'),
@@ -59,4 +52,3 @@ class ApiService {
         .toList();
   }
 }
-```

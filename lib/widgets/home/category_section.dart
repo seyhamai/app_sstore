@@ -1,6 +1,8 @@
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../models/category_model.dart';
+
 class CategorySection extends StatelessWidget {
   final List<CategoryModel> categories;
 
@@ -27,19 +29,28 @@ class CategorySection extends StatelessWidget {
 
         /// CATEGORY LIST
         SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
+  height: 100,
+  child: ScrollConfiguration(
+    behavior: const MaterialScrollBehavior().copyWith(
+      dragDevices: {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      },
+    ),
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
 
-              return _CategoryItem(
-                category: category,
-              );
-            },
-          ),
-        ),
+        return _CategoryItem(
+          category: category,
+        );
+      },
+    ),
+  ),
+),
       ],
     );
   }
@@ -56,26 +67,31 @@ class _CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 75,
+
       margin: const EdgeInsets.only(
         right: 15,
       ),
+
       child: Column(
         children: [
           /// ICON
           Container(
-            width:50,
-            height:50,
+            width: 50,
+            height: 50,
+
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(30),
+
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
-                  blurRadius: 5,
+                  blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
+
             child: Icon(
               _getIcon(category.icon),
               color: Colors.black,
@@ -91,6 +107,7 @@ class _CategoryItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
+
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -127,3 +144,4 @@ class _CategoryItem extends StatelessWidget {
     }
   }
 }
+

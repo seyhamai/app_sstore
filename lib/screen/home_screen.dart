@@ -5,6 +5,7 @@ import 'package:sstore_app/widgets/home/home_app_bar.dart';
 import 'package:sstore_app/widgets/home/category_section.dart';
 import 'package:sstore_app/widgets/home/home_search.dart';
 import 'package:sstore_app/widgets/home/banner_slider.dart';
+import 'package:sstore_app/widgets/home/product_section.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -40,6 +41,33 @@ class _HomeScreenState extends State<HomeScreen> {
                CategorySection(
               categories: FakeData.categories),
               const SizedBox(height: 15), 
+               /// Promotion
+              ProductSection(
+                title: "Promotion",
+                products: FakeData.promotionProducts,
+                onSeeAll: () {
+                  // TODO: Promotion page
+                },
+              ),
+               /// Popular
+              ProductSection(
+                title: "Popular",
+                products: FakeData.popularProducts,
+                onSeeAll: () {
+                  // TODO: Popular products page
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              /// New Products
+              ProductSection(
+                title: "New Arrivals",
+                products: FakeData.newProducts,
+                onSeeAll: () {
+                  // TODO: New products page
+                },
+              ),
             ],
           ),
         ),
