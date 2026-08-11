@@ -139,5 +139,102 @@ static List<ProductModel> newProducts = [
     price: 72.00,
   ),
 ];
+ static final List<ProductModel> products = [
+    ProductModel(
+      id: 1,
+      name: "Nike Air Max",
+      image: "assets/images/shoe1.jpg",
+      price: 59.99,
+      oldPrice: 79.99,
+    ),
+
+    ProductModel(
+      id: 2,
+      name: "Adidas Runner",
+      image: "assets/images/shoe2.jpg",
+      price: 49.99,
+      oldPrice: 69.99,
+    ),
+
+    ProductModel(
+      id: 3,
+      name: "Puma Sport",
+      image: "assets/images/shoe3.jpg",
+      price: 44.99,
+      oldPrice: 64.99,
+    ),
+
+    ProductModel(
+      id: 4,
+      name: "New Balance 574",
+      image: "assets/images/shoe4.jpg",
+      price: 69.99,
+      oldPrice: 89.99,
+    ),
+
+    ProductModel(
+      id: 5,
+      name: "Nike Revolution",
+      image: "assets/images/shoe5.jpg",
+      price: 39.99,
+      oldPrice: 54.99,
+    ),
+
+    ProductModel(
+      id: 6,
+      name: "Adidas Ultraboost",
+      image: "assets/images/shoe6.jpg",
+      price: 89.99,
+      oldPrice: 119.99,
+    ),
+
+    ProductModel(
+      id: 7,
+      name: "Puma Velocity",
+      image: "assets/images/shoe7.jpg",
+      price: 54.99,
+      oldPrice: 74.99,
+    ),
+
+    ProductModel(
+      id: 8,
+      name: "Converse Classic",
+      image: "assets/images/shoe8.jpg",
+      price: 45.99,
+      oldPrice: 59.99,
+    ),
+
+    ProductModel(
+      id: 9,
+      name: "Nike Court Vision",
+      image: "assets/images/shoe9.jpg",
+      price: 64.99,
+      oldPrice: 84.99,
+    ),
+
+    ProductModel(
+      id: 10,
+      name: "Adidas Forum Low",
+      image: "assets/images/shoe10.jpg",
+      price: 74.99,
+      oldPrice: 99.99,
+    ),
+
+    ProductModel(
+      id: 11,
+      name: "Vans Old Skool",
+      image: "assets/images/shoe11.jpg",
+      price: 49.99,
+      oldPrice: 65.99,
+    ),
+
+    ProductModel(
+      id: 12,
+      name: "Reebok Classic",
+      image: "assets/images/shoe12.jpg",
+      price: 42.99,
+      oldPrice: 59.99,
+    ),
+  ];
 
 }

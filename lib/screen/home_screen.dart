@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sstore_app/data/fake_data.dart';
 import 'package:sstore_app/models/banner_model.dart';
-import 'package:sstore_app/widgets/home/home_app_bar.dart';
+import 'package:sstore_app/widgets/navigation/app_navigation_bar.dart';
 import 'package:sstore_app/widgets/home/category_section.dart';
 import 'package:sstore_app/widgets/home/home_search.dart';
 import 'package:sstore_app/widgets/home/banner_slider.dart';
@@ -23,7 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
 
       //widget for app bar
-      appBar: const HomeAppBar(),
+      appBar: const AppNavigationBar(
+        title: "Sstore",
+        subtitle: "Welcome",
+      ),
 
       body: SingleChildScrollView(
         child: Padding(
@@ -46,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: "Promotion",
                 products: FakeData.promotionProducts,
                 onSeeAll: () {
-                  // TODO: Promotion page
+                  /// TODO: Promotion page
                 },
               ),
                /// Popular
@@ -54,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: "Popular",
                 products: FakeData.popularProducts,
                 onSeeAll: () {
-                  // TODO: Popular products page
+                  /// TODO: Popular products page
                 },
               ),
 
@@ -65,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: "New Arrivals",
                 products: FakeData.newProducts,
                 onSeeAll: () {
-                  // TODO: New products page
+                  /// TODO: New products page
                 },
               ),
             ],

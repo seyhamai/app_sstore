@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -12,44 +13,48 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      onDestinationSelected: onTap,
-      backgroundColor: Colors.white,
-      indicatorColor: Colors.grey.shade200,
+    return TooltipVisibility(
+      visible: false,
 
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(CupertinoIcons.house),
-          selectedIcon: Icon(CupertinoIcons.house),
-          label: "Home",
-        ),
+      child: NavigationBar(
+        selectedIndex: currentIndex,
+        onDestinationSelected: onTap,
 
-        NavigationDestination(
-          icon: Icon(Icons.storefront_outlined),
-          selectedIcon: Icon(Icons.storefront),
-          label: "Shop",
-        ),
+        backgroundColor: Colors.white,
+        indicatorColor: Colors.white54,
 
-        // NavigationDestination(
-          
-        //   icon: Icon(Icons.shopping_cart_outlined),
-        //   selectedIcon: Icon(Icons.shopping_cart),
-        //   label: "Cart",
-        // ),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.house),
+            selectedIcon: Icon(CupertinoIcons.house_fill),
+            label: "Home",
+          ),
 
-        NavigationDestination(
-          icon: Icon(Icons.favorite_border),
-          selectedIcon: Icon(Icons.favorite),
-          label: "Favorites",
-        ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.shopping_cart),
+            selectedIcon: Icon(
+              CupertinoIcons.shopping_cart,
+            ),
+            label: "Shop",
+          ),
 
-        NavigationDestination(
-          icon: Icon(CupertinoIcons.person_crop_circle_fill),
-          selectedIcon: Icon(CupertinoIcons.person_solid),
-          label: "Account",
-        ),
-      ],
+          NavigationDestination(
+            icon: Icon(Icons.favorite_border),
+            selectedIcon: Icon(Icons.favorite),
+            label: "Favorites",
+          ),
+
+          NavigationDestination(
+            icon: Icon(
+              CupertinoIcons.person_crop_circle_fill,
+            ),
+            selectedIcon: Icon(
+              CupertinoIcons.person_crop_circle_fill,
+            ),
+            label: "Me",
+          ),
+        ],
+      ),
     );
   }
 }
