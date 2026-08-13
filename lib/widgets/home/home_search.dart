@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeSearch extends StatelessWidget {
   const HomeSearch({super.key});
@@ -12,15 +13,15 @@ class HomeSearch extends StatelessWidget {
                   hintStyle: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.normal,
                   ),
                   prefixIcon: const Icon(
-                    Icons.search,
-                    color: Colors.orange,
+                    CupertinoIcons.search,
+                    color: Colors.black,
                   ),
                   suffixIcon: const Icon(
-                    Icons.tune_sharp,
-                    color: Colors.orange,
+                    CupertinoIcons.slider_horizontal_3,
+                    color: Colors.black,
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],

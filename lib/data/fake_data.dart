@@ -84,7 +84,7 @@ class FakeData {
   ProductModel(
     id: 1,
     name: "Running Shoes",
-    image: "assets/images/shoe1.jpg",
+    image: "assets/images/banner1.jpg",
     price: 39.00,
     oldPrice: 59.00,
   ),
@@ -141,12 +141,29 @@ static List<ProductModel> newProducts = [
 ];
  static final List<ProductModel> products = [
     ProductModel(
-      id: 1,
-      name: "Nike Air Max",
-      image: "assets/images/shoe1.jpg",
-      price: 59.99,
-      oldPrice: 79.99,
-    ),
+  id: 1,
+  name: "Nike Air Max",
+  image: "assets/images/shoe1.jpg",
+  price: 59.99,
+  oldPrice: 79.99,
+  rating: 4.8,
+  description:
+      "Comfortable running shoes with a lightweight design "
+      "and excellent cushioning for everyday use.",
+  sizes: [
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+  ],
+  colors: [
+    "Black",
+    "White",
+    "Red",
+  ],
+),
 
     ProductModel(
       id: 2,

@@ -4,6 +4,10 @@ class ProductModel {
   final String image;
   final double price;
   final double? oldPrice;
+  final double rating;
+  final String description;
+  final List<String> sizes;
+  final List<String> colors;
 
   ProductModel({
     required this.id,
@@ -11,9 +15,15 @@ class ProductModel {
     required this.image,
     required this.price,
     this.oldPrice,
+    this.rating = 0,
+    this.description = '',
+    this.sizes = const [],
+    this.colors = const [],
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  factory ProductModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return ProductModel(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
@@ -27,6 +37,17 @@ class ProductModel {
               json['old_price'].toString(),
             )
           : null,
+      rating: double.tryParse(
+            json['rating'].toString(),
+          ) ??
+          0,
+      description: json['description'] ?? '',
+      sizes: json['sizes'] != null
+          ? List<String>.from(json['sizes'])
+          : [],
+      colors: json['colors'] != null
+          ? List<String>.from(json['colors'])
+          : [],
     );
   }
 }
