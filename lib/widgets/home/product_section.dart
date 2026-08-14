@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../models/product_model.dart';
 import 'package:flutter/gestures.dart';
+import 'package:sstore_app/theme/app_colors.dart';
+import '../../models/product_model.dart';
 import '../product_card.dart';
 
 class ProductSection extends StatelessWidget {
@@ -36,10 +37,10 @@ class ProductSection extends StatelessWidget {
             TextButton(
               onPressed: onSeeAll,
               child: const Text(
-                "See all",
+                "See More",
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.orange,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ),

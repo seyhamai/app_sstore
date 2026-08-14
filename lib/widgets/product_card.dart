@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sstore_app/screen/product_detail_screen.dart';
+import 'package:sstore_app/theme/app_colors.dart';
 import '../models/product_model.dart';
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -95,7 +96,7 @@ class ProductCard extends StatelessWidget {
                           "\$${product.price.toStringAsFixed(2)}",
                           style: const TextStyle(
                             fontSize: 11,
-                            color: Colors.orange,
+                            color: AppColors.sale,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

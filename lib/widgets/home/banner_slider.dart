@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sstore_app/theme/app_colors.dart';
 import '../../models/banner_model.dart';
 
 class BannerSlider extends StatefulWidget {
@@ -100,7 +101,7 @@ class _BannerSliderState extends State<BannerSlider> {
 
                   decoration: BoxDecoration(
                     color: currentIndex == index
-                        ? Colors.orange
+                        ? AppColors.primary
                         : Colors.grey.shade400,
 
                     borderRadius:

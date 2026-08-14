@@ -87,6 +87,7 @@ class FakeData {
     image: "assets/images/banner1.jpg",
     price: 39.00,
     oldPrice: 59.00,
+    description : "High-quality running shoes for all terrains.",
   ),
 
   ProductModel(
