@@ -1,31 +1,97 @@
 import 'package:flutter/material.dart';
+import '../data/fake_data.dart';
 import '../models/product_model.dart';
+import '../services/cart_service.dart';
+import 'cart_screen.dart';
+import 'checkout_screen.dart';
 import '../theme/app_colors.dart';
+import '../widgets/home/product_section.dart';
+
 class ProductDetailScreen extends StatefulWidget {
   final ProductModel product;
 
-  const ProductDetailScreen({
-    super.key,
-    required this.product,
-  });
+  const ProductDetailScreen({super.key, required this.product});
 
   @override
-  State<ProductDetailScreen> createState() =>
-      _ProductDetailScreenState();
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState
-    extends State<ProductDetailScreen> {
-
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int selectedSizeIndex = -1;
   int selectedColorIndex = 0;
   int quantity = 1;
+  late final TextEditingController quantityController;
 
   bool isFavorite = false;
 
   @override
+  void initState() {
+    super.initState();
+    quantityController = TextEditingController(text: quantity.toString());
+  }
+
+  @override
+  void dispose() {
+    quantityController.dispose();
+    super.dispose();
+  }
+
+  void updateQuantity(int value) {
+    final nextQuantity = value.clamp(1, 99);
+
+    setState(() {
+      quantity = nextQuantity;
+      quantityController.value = TextEditingValue(
+        text: nextQuantity.toString(),
+        selection: TextSelection.collapsed(
+          offset: nextQuantity.toString().length,
+        ),
+      );
+    });
+  }
+
+  CartItem buildCartItem() {
+    final product = widget.product;
+    return CartItem(
+      product: product,
+      quantity: quantity,
+      size: selectedSizeIndex >= 0 ? product.sizes[selectedSizeIndex] : null,
+      color: selectedColorIndex >= 0 && product.colors.isNotEmpty
+          ? product.colors[selectedColorIndex]
+          : null,
+    );
+  }
+
+  void addToCart() {
+    final item = buildCartItem();
+    CartService.instance.addProduct(
+      item.product,
+      quantity: item.quantity,
+      size: item.size,
+      color: item.color,
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const CartScreen()),
+    );
+  }
+
+  void buyNow() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CheckoutScreen(items: [buildCartItem()]),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    final relatedProducts = FakeData.products
+        .where((item) => item.id != product.id)
+        .toList();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -65,12 +131,8 @@ class _ProductDetailScreenState
               });
             },
             icon: Icon(
-              isFavorite
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              color: isFavorite
-                  ? AppColors.sale
-                  : Colors.black,
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? AppColors.sale : Colors.black,
             ),
           ),
         ],
@@ -79,7 +141,6 @@ class _ProductDetailScreenState
       body: SingleChildScrollView(
         child: Column(
           children: [
-
             /// PRODUCT IMAGE
             Container(
               width: double.infinity,
@@ -89,10 +150,7 @@ class _ProductDetailScreenState
               child: Padding(
                 padding: const EdgeInsets.all(20),
 
-                child: Image.asset(
-                  product.image,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset(product.image, fit: BoxFit.contain),
               ),
             ),
 
@@ -113,25 +171,20 @@ class _ProductDetailScreenState
               ),
 
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-
                   /// NAME + RATING
                   Row(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       Expanded(
                         child: Text(
                           product.name,
                           style: const TextStyle(
                             fontSize: 22,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -149,13 +202,8 @@ class _ProductDetailScreenState
                           const SizedBox(width: 4),
 
                           Text(
-                            product.rating
-                                .toStringAsFixed(1),
-                            style:
-                                const TextStyle(
-                              fontWeight:
-                                  FontWeight.w600,
-                            ),
+                            product.rating.toStringAsFixed(1),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -167,14 +215,12 @@ class _ProductDetailScreenState
                   /// PRICE
                   Row(
                     children: [
-
                       Text(
                         "\$${product.price.toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 22,
                           color: AppColors.sale,
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
 
@@ -186,9 +232,7 @@ class _ProductDetailScreenState
                           style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.textSecondary,
-                            decoration:
-                                TextDecoration
-                                    .lineThrough,
+                            decoration: TextDecoration.lineThrough,
                           ),
                         ),
                       ],
@@ -200,10 +244,7 @@ class _ProductDetailScreenState
                   /// DESCRIPTION
                   const Text(
                     "Description",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
 
                   const SizedBox(height: 8),
@@ -235,45 +276,31 @@ class _ProductDetailScreenState
                       height: 45,
 
                       child: ListView.builder(
-                        scrollDirection:
-                            Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
 
-                        itemCount:
-                            product.sizes.length,
+                        itemCount: product.sizes.length,
 
-                        itemBuilder:
-                            (context, index) {
-
-                          final selected =
-                              selectedSizeIndex ==
-                                  index;
+                        itemBuilder: (context, index) {
+                          final selected = selectedSizeIndex == index;
 
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedSizeIndex =
-                                    index;
+                                selectedSizeIndex = index;
                               });
                             },
 
                             child: Container(
                               width: 45,
 
-                              margin:
-                                  const EdgeInsets
-                                      .only(
-                                right: 10,
-                              ),
+                              margin: const EdgeInsets.only(right: 10),
 
-                              decoration:
-                                  BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: selected
                                     ? AppColors.primary
                                     : Colors.white,
 
-                                borderRadius:
-                                    BorderRadius
-                                        .circular(10),
+                                borderRadius: BorderRadius.circular(10),
 
                                 border: Border.all(
                                   color: selected
@@ -284,16 +311,14 @@ class _ProductDetailScreenState
 
                               child: Center(
                                 child: Text(
-                                  product
-                                      .sizes[index],
+                                  product.sizes[index],
 
                                   style: TextStyle(
                                     color: selected
                                         ? AppColors.surface
                                         : AppColors.textPrimary,
 
-                                    fontWeight:
-                                        FontWeight.normal,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -322,63 +347,45 @@ class _ProductDetailScreenState
                       height: 40,
 
                       child: ListView.builder(
-                        scrollDirection:
-                            Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
 
-                        itemCount:
-                            product.colors.length,
+                        itemCount: product.colors.length,
 
-                        itemBuilder:
-                            (context, index) {
-
-                          final selected =
-                              selectedColorIndex ==
-                                  index;
+                        itemBuilder: (context, index) {
+                          final selected = selectedColorIndex == index;
 
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedColorIndex =
-                                    index;
+                                selectedColorIndex = index;
                               });
                             },
 
                             child: Container(
-                              margin:
-                                  const EdgeInsets
-                                      .only(
-                                right: 10,
-                              ),
+                              margin: const EdgeInsets.only(right: 10),
 
-                              padding:
-                                  const EdgeInsets
-                                      .symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
 
-                              decoration:
-                                  BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: selected
                                     ? AppColors.primary
                                     : AppColors.border,
 
-                                borderRadius:
-                                    BorderRadius
-                                        .circular(20),
+                                borderRadius: BorderRadius.circular(20),
                               ),
 
                               child: Center(
                                 child: Text(
-                                  product
-                                      .colors[index],
+                                  product.colors[index],
 
                                   style: TextStyle(
                                     fontSize: 13,
 
                                     color: selected
                                         ? Colors.white
-                                        : Colors
-                                            .black,
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
@@ -393,69 +400,65 @@ class _ProductDetailScreenState
 
                   /// QUANTITY
                   Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment
-                            .spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                     children: [
-
                       const Text(
                         "Quantity",
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
 
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade100,
-                          borderRadius:
-                              BorderRadius.circular(
-                            10,
-                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
 
                         child: Row(
                           children: [
-
                             IconButton(
                               onPressed: quantity > 1
-                                  ? () {
-                                      setState(() {
-                                        quantity--;
-                                      });
-                                    }
+                                  ? () => updateQuantity(quantity - 1)
                                   : null,
-
-                              icon: const Icon(
-                                Icons.remove,
-                                size: 18,
-                              ),
+                              icon: const Icon(Icons.remove, size: 18),
                             ),
 
-                            Text(
-                              quantity.toString(),
-
-                              style:
-                                  const TextStyle(
-                                fontWeight:
-                                    FontWeight.bold,
+                            SizedBox(
+                              width: 36,
+                              child: TextField(
+                                controller: quantityController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                                onChanged: (value) {
+                                  final parsedQuantity = int.tryParse(value);
+                                  if (parsedQuantity != null &&
+                                      parsedQuantity > 0) {
+                                    quantity = parsedQuantity.clamp(1, 99);
+                                  }
+                                },
+                                onEditingComplete: () {
+                                  updateQuantity(quantity);
+                                  FocusScope.of(context).unfocus();
+                                },
                               ),
                             ),
 
                             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
-
-                              icon: const Icon(
-                                Icons.add,
-                                size: 18,
-                              ),
+                              onPressed: quantity < 99
+                                  ? () => updateQuantity(quantity + 1)
+                                  : null,
+                              icon: const Icon(Icons.add, size: 18),
                             ),
                           ],
                         ),
@@ -465,92 +468,57 @@ class _ProductDetailScreenState
 
                   const SizedBox(height: 25),
 
-                  /// ACTION BUTTONS
-                  Row(
-                    children: [
-
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            // Add to cart
-                          },
-
-                          style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(
-                              double.infinity,
-                              52,
-                            ),
-
-                            side: const BorderSide(
-                              color: AppColors.border,
-                            ),
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-
-                            overlayColor: Colors.grey,
-                          ),
-
-                          child: const Text(
-                            "Add to Cart",
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-
-                      Expanded(
-                        child:
-                            ElevatedButton(
-                          onPressed: () {
-                            // TODO:
-                            // Buy now
-                          },
-
-                          style:
-                              ElevatedButton
-                                  .styleFrom(
-                            minimumSize:
-                                const Size(
-                              double.infinity,
-                              52,
-                            ),
-
-                            backgroundColor:
-                                AppColors.primary,
-
-                            foregroundColor:
-                                Colors.white,
-
-                            shape:
-                                RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(
-                                12,
-                              ),
-                            ),
-                              overlayColor: AppColors.textSecondary
-                          ),
-
-                          child:
-                              const Text(
-                            "Buy Now",
-                            style: TextStyle(
-                              fontWeight:
-                                  FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
                   const SizedBox(height: 10),
                 ],
+              ),
+            ),
+
+            if (relatedProducts.isNotEmpty)
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.fromLTRB(16, 12, 0, 8),
+                color: Colors.white,
+                child: ProductSection(
+                  title: "You may also like",
+                  products: relatedProducts,
+                ),
+              ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: addToCart,
+                icon: const Icon(Icons.shopping_cart_outlined, size: 18),
+                label: const Text('Add to Cart'),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  side: const BorderSide(color: AppColors.border),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: buyNow,
+                icon: const Icon(Icons.flash_on_outlined, size: 18),
+                label: const Text('Buy Now'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
             ),
           ],

@@ -89,7 +89,7 @@ class ProductCard extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                    Row(
+                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(

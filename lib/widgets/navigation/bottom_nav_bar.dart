@@ -32,10 +32,14 @@ class BottomNavBar extends StatelessWidget {
 
           NavigationDestination(
             icon: Icon(CupertinoIcons.shopping_cart),
-            selectedIcon: Icon(
-              CupertinoIcons.shopping_cart,
-            ),
+            selectedIcon: Icon(CupertinoIcons.shopping_cart),
             label: "Shop",
+          ),
+
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.cart),
+            selectedIcon: Icon(CupertinoIcons.cart_fill),
+            label: "Cart",
           ),
 
           NavigationDestination(
@@ -45,12 +49,8 @@ class BottomNavBar extends StatelessWidget {
           ),
 
           NavigationDestination(
-            icon: Icon(
-              CupertinoIcons.person_crop_circle_fill,
-            ),
-            selectedIcon: Icon(
-              CupertinoIcons.person_crop_circle_fill,
-            ),
+            icon: Icon(CupertinoIcons.person_crop_circle_fill),
+            selectedIcon: Icon(CupertinoIcons.person_crop_circle_fill),
             label: "Me",
           ),
         ],

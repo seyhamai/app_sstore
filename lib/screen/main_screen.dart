@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'shop_screen.dart';
-// import 'cart_screen.dart';
+import 'cart_screen.dart';
 import 'wishlist_screen.dart';
 import 'account_screen.dart';
 
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> pages = const [
     HomeScreen(),
     ShopScreen(),
-    // CartScreen(),
+    CartScreen(),
     WishlistScreen(),
     AccountScreen(),
   ];
@@ -28,10 +28,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
-      ),
+      body: IndexedStack(index: currentIndex, children: pages),
 
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
