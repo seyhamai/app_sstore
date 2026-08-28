@@ -15,6 +15,16 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+            size: 20,
+          ),
+        ),
         title: const Text(
           'My Cart',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

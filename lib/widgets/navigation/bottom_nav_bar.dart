@@ -35,13 +35,6 @@ class BottomNavBar extends StatelessWidget {
             selectedIcon: Icon(CupertinoIcons.shopping_cart),
             label: "Shop",
           ),
-
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.cart),
-            selectedIcon: Icon(CupertinoIcons.cart_fill),
-            label: "Cart",
-          ),
-
           NavigationDestination(
             icon: Icon(Icons.favorite_border),
             selectedIcon: Icon(Icons.favorite),
