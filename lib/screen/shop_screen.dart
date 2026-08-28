@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:sstore_app/widgets/home/home_search.dart';
 import 'package:sstore_app/widgets/navigation/app_navigation_bar.dart';
+import 'package:sstore_app/models/product_model.dart';
 
 import '../data/fake_data.dart';
 import '../widgets/product_card.dart';
 
 class ShopScreen extends StatelessWidget {
-  const ShopScreen({super.key});
+  final String searchQuery;
+  final List<ProductModel>? products;
+
+  const ShopScreen({
+    super.key,
+    this.searchQuery = '',
+    this.products,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final products = FakeData.products;
+    final availableProducts = products ?? FakeData.products;
+    final query = searchQuery.trim().toLowerCase();
+    final filteredProducts = query.isEmpty
+      ? availableProducts
+      : availableProducts
+        .where((product) => product.name.toLowerCase().contains(query))
+        .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xffF5F5F5),
@@ -44,7 +58,7 @@ class ShopScreen extends StatelessWidget {
                 children: [
 
                   /// SEARCH
-                  const HomeSearch(),
+                  HomeSearch(),
 
                   const SizedBox(height: 20),
 
@@ -111,8 +125,8 @@ class ShopScreen extends StatelessWidget {
                 children: [
 
                   /// PRODUCT TITLE
-                  const Text(
-                    "All Products",
+                  Text(
+                    query.isEmpty ? "All Products" : "Results for $searchQuery",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -130,7 +144,7 @@ class ShopScreen extends StatelessWidget {
 
                     padding: EdgeInsets.zero,
 
-                    itemCount: products.length,
+                    itemCount: filteredProducts.length,
 
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -142,7 +156,7 @@ class ShopScreen extends StatelessWidget {
 
                     itemBuilder: (context, index) {
                       return ProductCard(
-                        product: products[index],
+                        product: filteredProducts[index],
                       );
                     },
                   ),

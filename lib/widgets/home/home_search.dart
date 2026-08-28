@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeSearch extends StatelessWidget {
-  const HomeSearch({super.key});
+  final ValueChanged<String>? onChanged;
+
+  const HomeSearch({super.key, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                   hintText: "Search...",
